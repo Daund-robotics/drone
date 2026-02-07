@@ -14,7 +14,7 @@ try:
     if numpy.__version__ >= '2.0.0':
         print(f"[CRITICAL ERROR] NumPy version {numpy.__version__} detected!")
         print("This version causes 'Illegal Instruction' crashes on Raspberry Pi 4.")
-        print("FIX: Run 'pip install \"numpy<2.0.0\" --force-reinstall'")
+        print("FIX: Run 'pip install \"numpy==1.26.4\" --force-reinstall --break-system-packages'")
         sys.exit(1)
 except ImportError:
     pass # Will be handled by auto-installer below

@@ -24,11 +24,11 @@
     ```bash
     ./setup.sh
     ```
-  - **Fix 2 (Manual Force Downgrade)**:
+    *(This now forcefully downgrades NumPy to 1.26.4)*
+  - **Fix 2 (Manual)**:
     ```bash
-    pip3 install "numpy<2.0.0" --force-reinstall --break-system-packages
+    pip3 install "numpy==1.26.4" --force-reinstall --break-system-packages
     ```
-    *(Note: `--break-system-packages` is required on RPi Bookworm OS)*
 
 - **"Camera not found"**: 
   - Check ribbon cable.
