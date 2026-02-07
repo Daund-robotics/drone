@@ -34,13 +34,14 @@ pip3 uninstall -y numpy opencv-python ultralytics
 echo "[INFO] Installing Python libraries..."
 pip3 install --upgrade pip
 
-# Install main packages
-pip3 install opencv-python ultralytics psutil --break-system-packages
+# CRITICAL FIX: 
+# opencv-python 4.13+ requires numpy 2.x, which crashes RPi.
+# We MUST pin opencv-python to an older version that supports numpy 1.x.
+# We also implicitly pin numpy<2.0.0
+echo "[INFO] Installing specific compatible versions (OpenCV 4.10, NumPy 1.26)..."
 
-# CRITICAL FIX: Force downgrade NumPy to 1.x AFTER other packages are installed
-# This overrides whatever version ultralytics/opencv pulled in.
-echo "[INFO] Forcing NumPy 1.26.4 to prevent SIGILL crashes..."
-pip3 install "numpy==1.26.4" --force-reinstall --break-system-packages
+# Install strict versions known to work on RPi Bullseye/Bookworm
+pip3 install "numpy<2.0.0" "opencv-python<=4.10.0.84" ultralytics psutil --break-system-packages
 
 echo "------------------------------------------------"
 echo "   SETUP COMPLETE!                              "
