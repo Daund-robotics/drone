@@ -19,8 +19,17 @@
 
 ## Troubleshooting
 - **"Exit Code -4" / "Illegal Instruction"**:
-  - Cause: Incompatible `numpy` version (2.x).
-  - Fix: Run `./setup.sh` again.
+  - **Cause**: Compatible NumPy version was overwritten by a newer one (2.x).
+  - **Fix 1 (Recommended)**:
+    ```bash
+    ./setup.sh
+    ```
+  - **Fix 2 (Manual Force Downgrade)**:
+    ```bash
+    pip3 install "numpy<2.0.0" --force-reinstall --break-system-packages
+    ```
+    *(Note: `--break-system-packages` is required on RPi Bookworm OS)*
+
 - **"Camera not found"**: 
   - Check ribbon cable.
   - Run `libcamera-hello` to test.
