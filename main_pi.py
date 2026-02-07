@@ -37,17 +37,22 @@ def install_and_import(package, import_name=None):
             print("Please run: pip install 'numpy<2.0.0' opencv-python ultralytics")
             sys.exit(1)
 
-# Check for crucial libraries
-# 'cv2' comes from 'opencv-python' (or 'opencv-python-headless' on server Pis)
+# Install with strict version pinning to prevent RPi crashes
+required_packages = [
+    ("ultralytics", "ultralytics"),
+    ("psutil", "psutil")
+]
+
+# Note: OpenCV (cv2) is installed via apt (python3-opencv) in setup.sh
+# We check for it but do not auto-install via pip to avoid "Illegal Instruction" crashes.
 try:
     import cv2
 except ImportError:
-    install_and_import("opencv-python", "cv2")
+    print("[ERROR] OpenCV not found! Please run './setup.sh' to install 'python3-opencv'.")
+    sys.exit(1)
 
-try:
-    from ultralytics import YOLO
-except ImportError:
-    install_and_import("ultralytics")
+for package, import_name in required_packages:
+    install_and_import(package, import_name)
 
 # --- 2. CONFIGURATION ---
 # RPi 4 defaults

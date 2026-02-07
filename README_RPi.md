@@ -24,10 +24,14 @@
     ```bash
     ./setup.sh
     ```
-    *(This now forcefully installs compatible versions)*
-  - **Fix 2 (Manual)**:
+  - **Fix**:
     ```bash
-    pip3 install "numpy<2.0.0" "opencv-python<=4.10.0.84" --break-system-packages
+    # Remove broken pip versions
+    pip3 uninstall -y opencv-python opencv-python-headless numpy
+    # Install stable system version
+    sudo apt-get install -y python3-opencv
+    # Reinstall numpy compatible with system
+    pip3 install "numpy<2.0.0" --break-system-packages
     ```
 
 - **"Camera not found"**: 

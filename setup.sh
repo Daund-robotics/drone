@@ -29,19 +29,20 @@ sudo apt-get install -y \
 
 # 4. Install Python Libraries
 echo "[INFO] Cleaning up potential conflicting libraries..."
-pip3 uninstall -y numpy opencv-python ultralytics
+# Remove PIP versions of OpenCV as they often crash RPi (Illegal Instruction)
+pip3 uninstall -y opencv-python opencv-python-headless numpy
+
+echo "[INFO] Installing System Dependencies (Stable OpenCV)..."
+# Use the official RPi built OpenCV - it is much more stable than pip wheels
+sudo apt-get update
+sudo apt-get install -y python3-opencv libhdf5-dev libatlas-base-dev
 
 echo "[INFO] Installing Python libraries..."
 pip3 install --upgrade pip
 
-# CRITICAL FIX: 
-# opencv-python 4.13+ requires numpy 2.x, which crashes RPi.
-# We MUST pin opencv-python to an older version that supports numpy 1.x.
-# We also implicitly pin numpy<2.0.0
-echo "[INFO] Installing specific compatible versions (OpenCV 4.10, NumPy 1.26)..."
-
-# Install strict versions known to work on RPi Bullseye/Bookworm
-pip3 install "numpy<2.0.0" "opencv-python<=4.10.0.84" ultralytics psutil --break-system-packages
+# Install Ultralytics and Utils (Pinning NumPy to <2.0 for best compatibility)
+# We do NOT install opencv-python here because we installed python3-opencv via apt
+pip3 install "numpy<2.0.0" ultralytics psutil --break-system-packages
 
 echo "------------------------------------------------"
 echo "   SETUP COMPLETE!                              "
