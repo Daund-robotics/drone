@@ -15,13 +15,20 @@ def install_and_import(package, import_name=None):
     except ImportError:
         print(f"[INFO] Installing {package} for RPi compatibility...")
         try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+            cmd = [sys.executable, "-m", "pip", "install", package]
+            if package == "ultralytics":
+                # Ensure numpy<2.0.0 is installed alongside ultralytics
+                cmd = [sys.executable, "-m", "pip", "install", "numpy<2.0.0", package]
+            elif package == "opencv-python":
+                cmd = [sys.executable, "-m", "pip", "install", "numpy<2.0.0", package]
+                
+            subprocess.check_call(cmd)
             print(f"[INFO] Successfully installed {package}. Restarting script...")
             # Restart script to ensure new env vars are loaded
             os.execv(sys.executable, ['python'] + sys.argv)
         except Exception as e:
             print(f"[ERROR] Failed to install {package}: {e}")
-            print("Please run: pip install opencv-python ultralytics")
+            print("Please run: pip install 'numpy<2.0.0' opencv-python ultralytics")
             sys.exit(1)
 
 # Check for crucial libraries

@@ -1,4 +1,3 @@
 ultralytics
 opencv-python
-cvzone
-numpy
+numpy<2.0.0

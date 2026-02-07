@@ -28,8 +28,14 @@ sudo apt-get install -y \
 # source venv/bin/activate
 
 # 4. Install Python Libraries
-echo "[INFO] Installing Python libraries..."
+echo "[INFO] Cleaning up potential conflicting libraries..."
+# Remove numpy 2.x if present, as it causes SIGILL (Exit Code -4) on some RPi configs with OpenCV
+pip3 uninstall -y numpy opencv-python ultralytics
+
+echo "[INFO] Installing Python libraries (Pinning NumPy < 2.0)..."
 pip3 install --upgrade pip
+# Force NumPy < 2.0.0 to avoid binary incompatibility ("Illegal Instruction")
+pip3 install "numpy<2.0.0"
 pip3 install opencv-python ultralytics psutil
 
 echo "------------------------------------------------"
