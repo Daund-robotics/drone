@@ -51,6 +51,12 @@ echo "[INFO] Installing Python libraries into venv..."
 # Note: We do NOT install opencv-python here because we inherit it from system
 ./venv/bin/pip install -r requirements.txt
 
+# CRITICAL FIX FOR RPi:
+# Ultralytics puts 'opencv-python' back. We MUST remove it to use the system one.
+# Otherwise: "Illegal Instruction" (Exit Code -4)
+echo "[INFO] Removing conflicting pip-installed OpenCV..."
+./venv/bin/pip uninstall -y opencv-python opencv-python-headless
+
 echo "------------------------------------------------"
 echo "   SETUP COMPLETE!                              "
 echo "------------------------------------------------"
