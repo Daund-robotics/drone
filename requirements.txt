@@ -1,4 +1,4 @@
 ultralytics
 picamzero
-numpy
+numpy<2.0.0
 psutil

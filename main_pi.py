@@ -6,23 +6,20 @@ import threading
 import math
 import platform
 
-# --- 0. ENV AUTO-FIX ---
+# --- 0. ENV AUTO-FIX (RESTART IN VENV) ---
 # If running in global python environment (e.g. /usr/bin/python3),
-# try to auto-inject the local venv site-packages to find 'ultralytics' and compatible 'numpy'.
+# restart the script using the venv python interpreter.
 if sys.prefix == "/usr":
-    venv_path = os.path.join(os.path.dirname(__file__), "venv")
-    if os.path.exists(venv_path):
-        # Dynamically find the site-packages folder (e.g. lib/python3.11/site-packages)
-        lib_path = os.path.join(venv_path, "lib")
-        if os.path.exists(lib_path):
-            for item in os.listdir(lib_path):
-                if item.startswith("python"):
-                    site_pkg = os.path.join(lib_path, item, "site-packages")
-                    if os.path.exists(site_pkg):
-                        print(f"[INFO] Running in system python, but found venv.")
-                        print(f"[INFO] Auto-injecting venv path: {site_pkg}")
-                        sys.path.insert(0, site_pkg)
-                        break
+    venv_python = os.path.join(os.path.dirname(__file__), "venv", "bin", "python3")
+    if os.path.exists(venv_python):
+        print(f"[INFO] Detected System Python ({sys.prefix}).")
+        print(f"[INFO] Restarting script in VENV: {venv_python}...")
+        try:
+            # Re-execute the script with the venv python
+            os.execv(venv_python, [venv_python] + sys.argv)
+        except OSError as e:
+            print(f"[ERROR] Failed to restart in venv: {e}")
+            # Fallback: try to continue (will likely crash)
 
 # --- 0. CRITICAL COMPATIBILITY CHECK ---
 # Many RPi environments crash with "Illegal Instruction" if numpy >= 2.0 is used with OpenCV.

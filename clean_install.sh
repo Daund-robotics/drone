@@ -36,7 +36,7 @@ echo "[INFO] Installing Python Libraries into venv..."
 # Install specific deps for RPi (Picamzero + Ultralytics)
 # We exclude opencv-python from requirements.txt via grep to be safe, 
 # or we just install explicitly here.
-./venv/bin/pip install picamzero ultralytics psutil numpy
+./venv/bin/pip install picamzero ultralytics psutil "numpy<2.0.0"
 
 # 5. CLEANUP CONFLICTS
 echo "[INFO] Removing conflicting OpenCV versions..."
