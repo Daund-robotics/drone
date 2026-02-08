@@ -6,6 +6,24 @@ import threading
 import math
 import platform
 
+# --- 0. ENV AUTO-FIX ---
+# If running in global python environment (e.g. /usr/bin/python3),
+# try to auto-inject the local venv site-packages to find 'ultralytics' and compatible 'numpy'.
+if sys.prefix == "/usr":
+    venv_path = os.path.join(os.path.dirname(__file__), "venv")
+    if os.path.exists(venv_path):
+        # Dynamically find the site-packages folder (e.g. lib/python3.11/site-packages)
+        lib_path = os.path.join(venv_path, "lib")
+        if os.path.exists(lib_path):
+            for item in os.listdir(lib_path):
+                if item.startswith("python"):
+                    site_pkg = os.path.join(lib_path, item, "site-packages")
+                    if os.path.exists(site_pkg):
+                        print(f"[INFO] Running in system python, but found venv.")
+                        print(f"[INFO] Auto-injecting venv path: {site_pkg}")
+                        sys.path.insert(0, site_pkg)
+                        break
+
 # --- 0. CRITICAL COMPATIBILITY CHECK ---
 # Many RPi environments crash with "Illegal Instruction" if numpy >= 2.0 is used with OpenCV.
 # We check this immediately to give a clear error instead of a hard crash.
