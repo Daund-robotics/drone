@@ -37,14 +37,16 @@ fi
 
 # 4. Install Python Libraries inside venv
 echo "[INFO] Installing Python libraries into venv..."
-source venv/bin/activate
+# 4. Install Python Libraries inside venv
+echo "[INFO] Installing Python libraries into venv..."
+# source venv/bin/activate # Optional now, we use explicit paths
 
 # Upgrade pip inside venv
-pip install --upgrade pip
+./venv/bin/pip install --upgrade pip
 
 # Install dependencies
 # Note: We do NOT install opencv-python here because we inherit it from system
-pip install -r requirements.txt
+./venv/bin/pip install -r requirements.txt
 
 echo "------------------------------------------------"
 echo "   SETUP COMPLETE!                              "
