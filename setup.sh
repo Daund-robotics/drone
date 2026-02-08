@@ -5,6 +5,9 @@ echo "   RASPBERRY PI 5 / 4 / ZERO 2 W SETUP          "
 echo "   (Python 3.13 Compatible - venv method)       "
 echo "------------------------------------------------"
 
+# Ensure we are in the script's directory
+cd "$(dirname "$0")"
+
 # 1. Update System
 echo "[INFO] Updating system packages..."
 sudo apt-get update && sudo apt-get upgrade -y

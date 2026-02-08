@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ensure we are in the script's directory
+cd "$(dirname "$0")"
+
 # Activate the virtual environment
 source venv/bin/activate
 
