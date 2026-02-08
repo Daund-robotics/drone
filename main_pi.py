@@ -141,7 +141,7 @@ def main():
     
     # Shared state for threading
     latest_frame = None
-    latest_results = []
+    latest_results = ([], [])
     lock = threading.Lock()
     running = True
 
