@@ -1,39 +1,51 @@
-# RPi 4 Drone Detection - Quick Start
+# Raspberry Pi Drone Detection (Python 3.13+)
 
-## How to Run
-1.  **Update Repo**:
-    ```bash
-    git pull origin main
-    ```
-2.  **Run Setup (Critical for first run)**:
-    ```bash
-    chmod +x setup.sh
-    ./setup.sh
-    ```
-    *This fixes the "Illegal Instruction" (Exit Code -4) crash by installing compatible NumPy.*
+## 🚀 Setup & Installation
 
-3.  **Run the App**:
-    ```bash
-    python3 main_pi.py
-    ```
+This project is optimized for Raspberry Pi 4 / 5 / Zero 2 W running the latest Raspberry Pi OS (Bookworm/Python 3.13).
+It uses a **Virtual Environment (venv)** to ensure stability and prevent "Illegal Instruction" errors common with mixed OpenCV versions.
 
-## Troubleshooting
-- **"Exit Code -4" / "Illegal Instruction"**:
-  - **Cause**: Compatible NumPy version was overwritten by a newer one (2.x).
-  - **Fix 1 (Recommended)**:
-    ```bash
-    ./setup.sh
-    ```
-  - **Fix**:
-    ```bash
-    # Remove broken pip versions
-    pip3 uninstall -y opencv-python opencv-python-headless numpy
-    # Install stable system version
-    sudo apt-get install -y python3-opencv
-    # Reinstall numpy compatible with system
-    pip3 install "numpy<2.0.0" --break-system-packages
-    ```
+### 1. Run the Setup Script
+Open a terminal in the project folder and run:
 
-- **"Camera not found"**: 
-  - Check ribbon cable.
-  - Run `libcamera-hello` to test.
+```bash
+chmod +x setup.sh run.sh
+./setup.sh
+```
+
+**What this does:**
+- Updates system packages
+- Installs `python3-opencv` (Stable system version)
+- Creates a virtual environment (`venv`)
+- Installs `ultralytics` (YOLO) and `psutil` into the `venv`
+- Pins `numpy` to a compatible version (<2.0)
+
+### 2. Run the Application
+Always use the `run.sh` script to start the detection. This auto-activates the virtual environment.
+
+```bash
+./run.sh
+```
+
+or manually:
+
+```bash
+source venv/bin/activate
+python3 main_pi.py
+```
+
+## ⚠️ Troubleshooting
+
+**"Illegal Instruction" Error:**
+- This means an incompatible version of NumPy or OpenCV was installed.
+- **Fix:** Run `./setup.sh` again to rebuild the environment with correct pinning.
+
+**Camera not opening:**
+- Ensure you are using the correct mode (CSI vs USB) in `camera_stream.py`.
+- For CSI cameras on new OS, you might need to enable Legacy Camera support in `raspi-config` or use `libcamera`.
+
+## 📂 Key Files
+- `main_pi.py`: Main logic for RPi.
+- `setup.sh`: Installation script (Use this!).
+- `run.sh`: Launcher script (Use this!).
+- `requirements.txt`: Python dependencies.

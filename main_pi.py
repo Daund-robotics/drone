@@ -19,41 +19,31 @@ try:
 except ImportError:
     pass # Will be handled by auto-installer below
 
-# --- 1. AUTO-INSTALL DEPENDENCIES ---
-def install_and_import(package, import_name=None):
-    if import_name is None:
-        import_name = package
-    try:
-        __import__(import_name)
-    except ImportError:
-        print(f"[INFO] Installing {package}...")
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package, "--break-system-packages"])
-            print(f"[INFO] Successfully installed {package}. Restarting script...")
-            # Restart script to ensure new env vars are loaded
-            os.execv(sys.executable, ['python'] + sys.argv)
-        except Exception as e:
-            print(f"[ERROR] Failed to install {package}: {e}")
-            print("Please run: pip install 'numpy<2.0.0' opencv-python ultralytics")
-            sys.exit(1)
 
-# Install with strict version pinning to prevent RPi crashes
-required_packages = [
-    ("ultralytics", "ultralytics"),
-    ("psutil", "psutil")
-]
-
-# Note: OpenCV (cv2) is installed via apt (python3-opencv) in setup.sh
-# We check for it but do not auto-install via pip to avoid "Illegal Instruction" crashes.
+# --- 1. ENVIRONMENT CHECK & IMPORTS ---
 try:
     import cv2
-except ImportError:
-    print("[ERROR] OpenCV not found! Please run './setup.sh' to install 'python3-opencv'.")
+    from ultralytics import YOLO
+    import psutil
+    import numpy
+except ImportError as e:
+    import sys
+    print("------------------------------------------------")
+    print(f"[ERROR] Missing library or import error: {e}")
+    print("------------------------------------------------")
+    print("PLEASE RUN THE SETUP SCRIPT FIRST:")
+    print("  chmod +x setup.sh")
+    print("  ./setup.sh")
+    print("THEN RUN WITH:")
+    print("  ./run.sh")
+    print("------------------------------------------------")
     sys.exit(1)
 
-for package, import_name in required_packages:
-    install_and_import(package, import_name)
+def check_dependencies():
+    # Optional double check or version check could go here
+    pass
 
+check_dependencies()
 # --- 2. CONFIGURATION ---
 # RPi 4 defaults
 MODEL_NAME = 'yolov8n.pt'  # Nano is best for RPi 4 CPU
