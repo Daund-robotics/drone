@@ -1,15 +1,24 @@
 # Raspberry Pi Drone Detection (Python 3.13+)
 
-## 🚀 Setup & Installation
+## 🚀 Quick Start (Fresh Install)
 
-This project is optimized for Raspberry Pi 4 / 5 / Zero 2 W running the latest Raspberry Pi OS (Bookworm/Python 3.13).
-It uses a **Virtual Environment (venv)** to ensure stability and prevent "Illegal Instruction" errors common with mixed OpenCV versions.
+**Recommended for first-time setup or if you are facing issues.**
 
-### 1. Run the Setup Script
-Open a terminal in the project folder and run:
+1.  **Run the Fresh Install Script:**
+    This will set up the Virtual Environment, install `picamzero`, `ultralytics`, and remove conflicting libraries automatically.
+    ```bash
+    chmod +x clean_install.sh
+    ./clean_install.sh
+    ```
 
+2.  **Run the Application:**
+    ```bash
+    ./run.sh
+    ```
+
+### Legacy Setup (Update only)
+If you just want to update dependencies without wiping everything:
 ```bash
-chmod +x setup.sh run.sh
 ./setup.sh
 ```
 
