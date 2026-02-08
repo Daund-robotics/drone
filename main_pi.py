@@ -9,15 +9,16 @@ import platform
 # --- 0. CRITICAL COMPATIBILITY CHECK ---
 # Many RPi environments crash with "Illegal Instruction" if numpy >= 2.0 is used with OpenCV.
 # We check this immediately to give a clear error instead of a hard crash.
+# --- 0. COMPATIBILITY CHECK ---
 try:
     import numpy
+    # Check if we are running compatible numpy
     if numpy.__version__ >= '2.0.0':
-        print(f"[CRITICAL ERROR] NumPy version {numpy.__version__} detected!")
-        print("This version causes 'Illegal Instruction' crashes on Raspberry Pi 4.")
-        print("FIX: Run 'pip install \"numpy==1.26.4\" --force-reinstall --break-system-packages'")
-        sys.exit(1)
+        print(f"[WARN] NumPy version {numpy.__version__} detected.")
+        print(" If you experience 'Illegal Instruction' crashes, run ./setup.sh again.")
+        # We don't exit here anymore because some custom builds might work.
 except ImportError:
-    pass # Will be handled by auto-installer below
+    pass
 
 
 # --- 1. ENVIRONMENT CHECK & IMPORTS ---

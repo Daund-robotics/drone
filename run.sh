@@ -4,4 +4,5 @@
 source venv/bin/activate
 
 # Run the main script
-python3 main_pi.py
+# Run the main script using the venv python explicitly
+./venv/bin/python3 main_pi.py
